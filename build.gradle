@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'clinic.management.dr.sens.dental.clinic'
+group = 'dr.sens.dental.clinic'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -18,8 +18,10 @@ dependencies {
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'javax.servlet:jstl'
+	implementation 'com.itextpdf:itextpdf:5.0.6'
 	implementation 'commons-io:commons-io:2.6'
 	implementation 'org.apache.commons:commons-lang3:3.0'
+	implementation 'commons-codec:commons-codec:1.11'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
