@@ -102,6 +102,11 @@ public class PatientInfoRepositoryImpl implements PatientInfoRepository {
 			criteria.and("_id").is(queryContent.getPatientId());
 		}
 
+		if (StringUtils.isNotBlank(queryContent.getInvoiceId())) {
+			criteria.and("consultations")
+					.elemMatch(Criteria.where("invoice.invoiceId").is(queryContent.getInvoiceId()));
+		}
+
 		if (StringUtils.isNotBlank(queryContent.getNextAppointmentDate())) {
 			criteria.and("consultations").elemMatch(
 					Criteria.where("nextAppointmentDate").is(LocalDate.parse(queryContent.getNextAppointmentDate())));

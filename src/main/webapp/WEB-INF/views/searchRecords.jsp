@@ -23,7 +23,8 @@
 						<form:input path="fullName" type="text" class="form-control"
 							id="fullName" />
 					</div>
-					<label class="control-label col-sm-2" for="patientId">Patient Id:</label>
+					<label class="control-label col-sm-2" for="patientId">Patient
+						Id:</label>
 					<div class="col-sm-3">
 						<form:input path="patientId" type="text" class="form-control"
 							id="patientId" />
@@ -38,11 +39,11 @@
 						<form:input path="phoneNumber" type="text" class="form-control"
 							id="phoneNumber" />
 					</div>
-					<label class="control-label col-sm-2" for="emailId">Email
+					<label class="control-label col-sm-2" for="invoiceId">Invoice
 						Id:</label>
 					<div class="col-sm-3">
-						<form:input path="emailId" type="text" class="form-control"
-							id="emailId" />
+						<form:input path="invoiceId" type="text" class="form-control"
+							id="invoiceId" />
 					</div>
 				</div>
 			</div>
@@ -63,18 +64,26 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="form-group"></div>
-			</div>
-			<div class="form-group margin-bottom-100px margin-right-16per">
-				<button type="submit" id="search"
-					class="btn btn-primary float-right">
-					<span class="glyphicon glyphicon-search"></span> Search
-				</button>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="emailId">Email
+						Id:</label>
+					<div class="col-sm-3">
+						<form:input path="emailId" type="text" class="form-control"
+							id="emailId" />
+					</div>
+					<div class="control-label col-sm-2"></div>
+					<div class="col-sm-3">
+						<button type="submit" id="search"
+							class="btn btn-primary float-right">
+							<span class="glyphicon glyphicon-search"></span> Search
+						</button>
+					</div>
+				</div>
 			</div>
 		</form:form>
 
-		<c:forEach var="patientSearchResult" items="${patientSearchResults}">
-			<table class="table table-hover">
+		<c:if test="${patientSearchResults.size() > 0}">
+			<table class="table table-hover margin-top-30px">
 				<thead>
 					<tr>
 						<th>Full Name</th>
@@ -88,23 +97,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>${patientSearchResult.fullName}</td>
-						<td>${patientSearchResult.age}</td>
-						<td>${patientSearchResult.gender}</td>
-						<td>${patientSearchResult.phoneNumber}</td>
-						<td>${patientSearchResult.emailId}</td>
-						<td>${patientSearchResult.dateOfVisit}</td>
-						<td>${patientSearchResult.nextAppointmentDate}</td>
-						<td><a
-							href="/patientDetails?patientId=${patientSearchResult.patientId}"
-							target="_blank" class="text-decoration-none"><span class="glyphicon glyphicon-new-window"></span>
-								more details</a></td>
-					</tr>
+					<c:forEach var="patientSearchResult"
+						items="${patientSearchResults}">
+						<tr>
+							<td>${patientSearchResult.fullName}</td>
+							<td>${patientSearchResult.age}</td>
+							<td>${patientSearchResult.gender}</td>
+							<td>${patientSearchResult.phoneNumber}</td>
+							<td>${patientSearchResult.emailId}</td>
+							<td>${patientSearchResult.dateOfVisit}</td>
+							<td>${patientSearchResult.nextAppointmentDate}</td>
+							<td><a
+								href="/patientDetails?patientId=${patientSearchResult.patientId}"
+								target="_blank" class="text-decoration-none"><span
+									class="glyphicon glyphicon-new-window"></span> more details</a></td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
-		</c:forEach>
-
+		</c:if>
 	</div>
 </body>
 </html>

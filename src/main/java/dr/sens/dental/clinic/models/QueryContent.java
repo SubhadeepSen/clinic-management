@@ -5,19 +5,12 @@ public class QueryContent {
 	private String fullName;
 	private String patientId;
 	private String phoneNumber;
-	private String emailId;
+	private String invoiceId;
 	private String dateOfVisit;
 	private String nextAppointmentDate;
+	private String emailId;
 
 	public QueryContent() {
-	}
-
-	public String getPatientId() {
-		return patientId;
-	}
-
-	public void setPatientId(String patientId) {
-		this.patientId = patientId;
 	}
 
 	public String getFullName() {
@@ -28,6 +21,14 @@ public class QueryContent {
 		this.fullName = fullName;
 	}
 
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -36,12 +37,12 @@ public class QueryContent {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getEmailId() {
-		return emailId;
+	public String getInvoiceId() {
+		return invoiceId;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 	public String getDateOfVisit() {
@@ -60,4 +61,11 @@ public class QueryContent {
 		this.nextAppointmentDate = nextAppointmentDate;
 	}
 
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 }
