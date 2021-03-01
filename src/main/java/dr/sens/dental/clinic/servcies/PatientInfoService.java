@@ -1,5 +1,7 @@
 package dr.sens.dental.clinic.servcies;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.INVOICE_ID;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PATIENT_ID;
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToConsultation;
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToPersonalInfo;
 import static dr.sens.dental.clinic.utils.DentalClinicValidationUtils.validateInvoiceTotalAmount;
@@ -43,8 +45,8 @@ public class PatientInfoService {
 			patientInfoRepository.updateExistingPatientInfoConsultations(patientId, consultation);
 		}
 
-		responseIds.put("patientId", patientId);
-		responseIds.put("invoiceId", consultation.getInvoice().getInvoiceId());
+		responseIds.put(PATIENT_ID, patientId);
+		responseIds.put(INVOICE_ID, consultation.getInvoice().getInvoiceId());
 		return responseIds;
 	}
 

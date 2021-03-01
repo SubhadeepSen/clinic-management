@@ -1,5 +1,13 @@
 package dr.sens.dental.clinic.repository;
 
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.CONSULTATIONS;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.DATE_OF_VISIT;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.EMAIL_ID;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.FULL_NAME;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.INVOICE_ID;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.NEXT_APPOINTMENT_DATE;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.PATIENT_ID;
+import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.PHONE_NUMBER;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -48,11 +56,11 @@ public class PatientInfoRepositoryImpl implements PatientInfoRepository {
 		Criteria criteria = new Criteria();
 
 		if (isNotBlank(patientId)) {
-			criteria.and("_id").is(patientId);
+			criteria.and(PATIENT_ID).is(patientId);
 		}
 
 		if (isNotBlank(phoneNumber)) {
-			criteria.and("personalInfo.phoneNumber").is(phoneNumber);
+			criteria.and(PHONE_NUMBER).is(phoneNumber);
 		}
 
 		List<PatientInfo> patientInfo = mongoTemplate.find(new Query(criteria), PatientInfo.class);
@@ -86,34 +94,33 @@ public class PatientInfoRepositoryImpl implements PatientInfoRepository {
 		Criteria criteria = new Criteria();
 
 		if (StringUtils.isNotBlank(queryContent.getDateOfVisit())) {
-			criteria.and("consultations")
-					.elemMatch(Criteria.where("dateOfVisit").is(LocalDate.parse(queryContent.getDateOfVisit())));
+			criteria.and(CONSULTATIONS)
+					.elemMatch(Criteria.where(DATE_OF_VISIT).is(LocalDate.parse(queryContent.getDateOfVisit())));
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getEmailId())) {
-			criteria.and("personalInfo.emailId").is(queryContent.getEmailId());
+			criteria.and(EMAIL_ID).is(queryContent.getEmailId());
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getFullName())) {
-			criteria.and("personalInfo.fullName").is(queryContent.getFullName());
+			criteria.and(FULL_NAME).is(queryContent.getFullName());
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getPatientId())) {
-			criteria.and("_id").is(queryContent.getPatientId());
+			criteria.and(PATIENT_ID).is(queryContent.getPatientId());
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getInvoiceId())) {
-			criteria.and("consultations")
-					.elemMatch(Criteria.where("invoice.invoiceId").is(queryContent.getInvoiceId()));
+			criteria.and(CONSULTATIONS).elemMatch(Criteria.where(INVOICE_ID).is(queryContent.getInvoiceId()));
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getNextAppointmentDate())) {
-			criteria.and("consultations").elemMatch(
-					Criteria.where("nextAppointmentDate").is(LocalDate.parse(queryContent.getNextAppointmentDate())));
+			criteria.and(CONSULTATIONS).elemMatch(
+					Criteria.where(NEXT_APPOINTMENT_DATE).is(LocalDate.parse(queryContent.getNextAppointmentDate())));
 		}
 
 		if (StringUtils.isNotBlank(queryContent.getPhoneNumber())) {
-			criteria.and("personalInfo.phoneNumber").is(queryContent.getPhoneNumber());
+			criteria.and(PHONE_NUMBER).is(queryContent.getPhoneNumber());
 		}
 
 		return criteria;

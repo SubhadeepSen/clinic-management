@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes;
 import dr.sens.dental.clinic.models.InvoiceForm;
 import dr.sens.dental.clinic.models.PatientForm;
 import dr.sens.dental.clinic.servcies.PatientInfoService;
@@ -37,8 +38,8 @@ public class InvoiceController {
 			return "redirect:/";
 		}
 
-		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, "invoiceForm");
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, "patientForm");
+		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.INVOICE_FORM);
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
 
 		if (invoiceForm == null) {
 			invoiceForm = buildNewInvoiceForm(patientForm);
@@ -56,9 +57,9 @@ public class InvoiceController {
 			return "redirect:/";
 		}
 
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, "patientForm");
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
 
-		sessionManagerService.setSessionAttribute(session, "invoiceForm", updateInvoiceForm(invoiceForm, patientForm));
+		sessionManagerService.setSessionAttribute(session, SessionAttributes.INVOICE_FORM, updateInvoiceForm(invoiceForm, patientForm));
 
 		return "reviewInvoiceForm";
 	}
@@ -69,8 +70,8 @@ public class InvoiceController {
 			return "redirect:/";
 		}
 
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, "patientForm");
-		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, "invoiceForm");
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
+		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.INVOICE_FORM);
 
 		sessionManagerService.clearSessionData(session);
 

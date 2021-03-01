@@ -1,6 +1,6 @@
 package dr.sens.dental.clinic.controllers;
 
-import static dr.sens.dental.clinic.constants.DentalClinicConstants.USERNAME_SESSION_ATTRIBUTE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes.USERNAME;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.removeFromModel;
 
@@ -39,7 +39,7 @@ public class LoginLogoutController {
 	public String login(@ModelAttribute("loginForm") LoginForm loginForm, Model model, HttpSession session) {
 		if (loginService.isValidLoginData(loginForm)) {
 			loginForm.setPassword(null);
-			sessionManagerService.setSessionAttribute(session, USERNAME_SESSION_ATTRIBUTE, loginForm.getUsername());
+			sessionManagerService.setSessionAttribute(session, USERNAME, loginForm.getUsername());
 			removeFromModel(model, "errorMessage");
 			return "redirect:/home";
 		}
