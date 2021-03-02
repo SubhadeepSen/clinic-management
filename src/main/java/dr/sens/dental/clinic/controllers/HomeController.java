@@ -1,5 +1,8 @@
 package dr.sens.dental.clinic.controllers;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.HOME_PAGE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_LOGIN;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,9 @@ public class HomeController {
 	@GetMapping("/home")
 	public String getHomePage(HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 		sessionManagerService.clearSessionData(session);
-		return "home";
+		return HOME_PAGE;
 	}
 }

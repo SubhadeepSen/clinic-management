@@ -1,5 +1,10 @@
 package dr.sens.dental.clinic.controllers;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes.INVOICE_FORM;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_LOGIN;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.CONFIRMATION_PAGE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.INVOICE_FORM_PAGE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.REVIEW_INVOICE_FORM_PAGE;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
 import java.util.Map;
@@ -35,43 +40,49 @@ public class InvoiceController {
 	@GetMapping("/invoiceForm")
 	public String getInvoiceForm(Model model, HttpSession session) throws JsonProcessingException {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
-		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.INVOICE_FORM);
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
+		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.INVOICE_FORM);
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.PATIENT_FORM);
 
 		if (invoiceForm == null) {
 			invoiceForm = buildNewInvoiceForm(patientForm);
 		}
 
-		addToModel(model, "invoiceForm", invoiceForm);
+		addToModel(model, INVOICE_FORM, invoiceForm);
 
-		return "invoiceForm";
+		return INVOICE_FORM_PAGE;
 	}
 
 	@PostMapping("/reviewInvoiceForm")
-	public String reviewInvoiceForm(@ModelAttribute("invoiceForm") InvoiceForm invoiceForm, Model model,
+	public String reviewInvoiceForm(@ModelAttribute(INVOICE_FORM) InvoiceForm invoiceForm, Model model,
 			HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.PATIENT_FORM);
 
-		sessionManagerService.setSessionAttribute(session, SessionAttributes.INVOICE_FORM, updateInvoiceForm(invoiceForm, patientForm));
+		sessionManagerService.setSessionAttribute(session, SessionAttributes.INVOICE_FORM,
+				updateInvoiceForm(invoiceForm, patientForm));
 
-		return "reviewInvoiceForm";
+		return REVIEW_INVOICE_FORM_PAGE;
 	}
 
 	@PostMapping("/confirmation")
 	public String submitForms(Model model, HttpSession session, HttpServletResponse response) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.PATIENT_FORM);
-		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session, SessionAttributes.INVOICE_FORM);
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.PATIENT_FORM);
+		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.INVOICE_FORM);
 
 		sessionManagerService.clearSessionData(session);
 
@@ -80,7 +91,7 @@ public class InvoiceController {
 			sessionManagerService.setSessionAttribute(session, id.getKey(), id.getValue());
 		}
 
-		return "confirmation";
+		return CONFIRMATION_PAGE;
 	}
 
 	private InvoiceForm buildNewInvoiceForm(PatientForm patientForm) {

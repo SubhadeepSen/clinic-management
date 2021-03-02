@@ -1,5 +1,11 @@
 package dr.sens.dental.clinic.controllers;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes.PATIENT_INFO;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes.PATIENT_SEARCH_RESULTS;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes.QUERY_CONTENT;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_LOGIN;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.PATIENT_DETAILS_PAGE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.SEARCH_RECORDS_PAGE;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
 import java.util.ArrayList;
@@ -15,9 +21,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.PatientInfo;
@@ -37,38 +40,31 @@ public class QueryController {
 	private PatientInfoService patientInfoService;
 
 	@GetMapping("/searchRecords")
-	public String getSearchRecordsPage(@ModelAttribute("queryContent") QueryContent queryContent, Model model,
+	public String getSearchRecordsPage(@ModelAttribute(QUERY_CONTENT) QueryContent queryContent, Model model,
 			HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
 		List<PatientInfo> patientInfos = patientInfoService.searchRecords(queryContent);
 		List<PatientSearchResult> patientSearchResults = transformToSearchResults(patientInfos);
 
-		addToModel(model, "queryContent", new QueryContent());
-		addToModel(model, "patientSearchResults", patientSearchResults);
+		addToModel(model, QUERY_CONTENT, new QueryContent());
+		addToModel(model, PATIENT_SEARCH_RESULTS, patientSearchResults);
 
-		return "searchRecords";
+		return SEARCH_RECORDS_PAGE;
 	}
 
 	@GetMapping("/patientDetails")
 	public String getPatientDetailsById(@RequestParam String patientId, Model model, HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
-		
-		try {
-			System.out.println(new ObjectMapper().writeValueAsString(patientInfo));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
-		addToModel(model, "patientInfo", patientInfo);
+		addToModel(model, PATIENT_INFO, patientInfo);
 
-		return "patientDetails";
+		return PATIENT_DETAILS_PAGE;
 	}
 
 	private List<PatientSearchResult> transformToSearchResults(List<PatientInfo> patientInfos) {

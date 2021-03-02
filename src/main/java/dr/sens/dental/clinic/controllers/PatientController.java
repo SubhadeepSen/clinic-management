@@ -1,5 +1,10 @@
 package dr.sens.dental.clinic.controllers;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_LOGIN;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_PATIENT_FORM;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes.PHONE_NUMBER;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.PATIENT_FORM_PAGE;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.REVIEW_PATIENT_FORM_PAGE;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
 import java.util.Objects;
@@ -15,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes;
+import dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes;
 import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.documents.PersonalInfo;
 import dr.sens.dental.clinic.exceptions.DentalClinicValidationException;
@@ -36,44 +43,45 @@ public class PatientController {
 	@GetMapping("/patientForm")
 	public String getPatientForm(Model model, HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
-		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session, "patientForm");
+		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session,
+				SessionAttributes.PATIENT_FORM);
 
 		if (patientForm == null) {
 			patientForm = new PatientForm();
 		}
 
-		String phoneNumber = (String) sessionManagerService.getSessionAttribute(session, "phoneNumber");
+		String phoneNumber = (String) sessionManagerService.getSessionAttribute(session, PHONE_NUMBER);
 		if (StringUtils.isNotBlank(phoneNumber)) {
-			sessionManagerService.removeSessionAttribute(session, "phoneNumber");
+			sessionManagerService.removeSessionAttribute(session, PHONE_NUMBER);
 			PatientInfo patientInfo = patientInfoService.getPatientInfoByPhoneNumber(phoneNumber);
 			poulatePatientForm(patientForm, patientInfo);
 		}
 
-		addToModel(model, "patientForm", patientForm);
-		return "patientForm";
+		addToModel(model, ModelAttributes.PATIENT_FORM, patientForm);
+		return PATIENT_FORM_PAGE;
 	}
 
 	@GetMapping("/polulatePatientForm")
 	public String getPolulatedPatientForm(Model model, HttpSession session, @RequestParam String phoneNumber) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 
 		if (StringUtils.isNotBlank(phoneNumber)) {
-			sessionManagerService.setSessionAttribute(session, "phoneNumber", phoneNumber);
+			sessionManagerService.setSessionAttribute(session, PHONE_NUMBER, phoneNumber);
 		}
 
-		return "redirect:/patientForm";
+		return REDIRECT_TO_PATIENT_FORM;
 	}
 
 	@PostMapping("/reviewPatientForm")
-	public String reviewPatientForm(@ModelAttribute("patientForm") PatientForm patientForm, Model model,
+	public String reviewPatientForm(@ModelAttribute(ModelAttributes.PATIENT_FORM) PatientForm patientForm, Model model,
 			HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
-			return "redirect:/";
+			return REDIRECT_TO_LOGIN;
 		}
 		try {
 			DentalClinicValidationUtils.validatePatientForm(patientForm);
@@ -81,12 +89,12 @@ public class PatientController {
 			if (StringUtils.isNotBlank(e.getErrorField())) {
 				model.addAttribute(e.getErrorField(), e.getMessage());
 			}
-			return "patientForm";
+			return PATIENT_FORM_PAGE;
 		}
 
 		DentalClinicTransformerUtils.removeEmptyItems(patientForm);
-		sessionManagerService.setSessionAttribute(session, "patientForm", patientForm);
-		return "reviewPatientForm";
+		sessionManagerService.setSessionAttribute(session, SessionAttributes.PATIENT_FORM, patientForm);
+		return REVIEW_PATIENT_FORM_PAGE;
 	}
 
 	private void poulatePatientForm(PatientForm patientForm, PatientInfo patientInfo) {

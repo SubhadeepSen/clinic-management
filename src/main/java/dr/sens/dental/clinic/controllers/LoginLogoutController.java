@@ -1,6 +1,10 @@
 package dr.sens.dental.clinic.controllers;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.ModelAttributes.LOGIN_FORM;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_HOME;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PathMapping.REDIRECT_TO_LOGIN;
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes.USERNAME;
+import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.LOGIN_PAGE;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.removeFromModel;
 
@@ -28,29 +32,29 @@ public class LoginLogoutController {
 
 	@GetMapping("/")
 	public String getLoginPage(Model model, HttpSession session) {
-		if (sessionManagerService.isValidSession(session)) {
-			return "redirect:/home";
+		if (!sessionManagerService.isValidSession(session)) {
+			addToModel(model, LOGIN_FORM, new LoginForm());
+			return LOGIN_PAGE;
 		}
-		addToModel(model, "loginForm", new LoginForm());
-		return "login";
+		return REDIRECT_TO_HOME;
 	}
 
 	@PostMapping("/login")
-	public String login(@ModelAttribute("loginForm") LoginForm loginForm, Model model, HttpSession session) {
+	public String login(@ModelAttribute(LOGIN_FORM) LoginForm loginForm, Model model, HttpSession session) {
 		if (loginService.isValidLoginData(loginForm)) {
 			loginForm.setPassword(null);
 			sessionManagerService.setSessionAttribute(session, USERNAME, loginForm.getUsername());
 			removeFromModel(model, "errorMessage");
-			return "redirect:/home";
+			return REDIRECT_TO_HOME;
 		}
 		addToModel(model, "errorMessage", "Invalid username or password");
-		return "login";
+		return LOGIN_PAGE;
 	}
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session, Model model) {
 		sessionManagerService.invalidateSession(session);
-		return "redirect:/";
+		return REDIRECT_TO_LOGIN;
 	}
 
 }
