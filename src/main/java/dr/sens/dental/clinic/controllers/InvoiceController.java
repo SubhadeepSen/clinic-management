@@ -25,8 +25,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes;
 import dr.sens.dental.clinic.models.InvoiceForm;
 import dr.sens.dental.clinic.models.PatientForm;
-import dr.sens.dental.clinic.servcies.PatientInfoService;
-import dr.sens.dental.clinic.servcies.SessionManagerService;
+import dr.sens.dental.clinic.services.PatientInfoService;
+import dr.sens.dental.clinic.services.SessionManagerService;
 
 @Controller
 public class InvoiceController {

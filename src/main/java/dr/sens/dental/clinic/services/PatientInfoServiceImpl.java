@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.servcies;
+package dr.sens.dental.clinic.services;
 
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.INVOICE_ID;
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PATIENT_ID;
@@ -27,11 +27,12 @@ import dr.sens.dental.clinic.models.QueryContent;
 import dr.sens.dental.clinic.repository.PatientInfoRepository;
 
 @Service
-public class PatientInfoService {
+public class PatientInfoServiceImpl implements PatientInfoService {
 
 	@Autowired
 	private PatientInfoRepository patientInfoRepository;
 
+	@Override
 	public Map<String, String> insertOrUpdate(PatientForm patientForm, InvoiceForm invoiceForm) {
 		validateInvoiceTotalAmount(invoiceForm.getWorkDoneAmounts(), invoiceForm.getTotalAmount());
 
@@ -53,14 +54,17 @@ public class PatientInfoService {
 		return responseIds;
 	}
 
+	@Override
 	public PatientInfo getPatientInfoByPatientId(String patientId) {
 		return patientInfoRepository.findByPatientIdAndOrPhoneNumber(patientId, null);
 	}
 
+	@Override
 	public PatientInfo getPatientInfoByPhoneNumber(String phoneNumber) {
 		return patientInfoRepository.findByPatientIdAndOrPhoneNumber(null, phoneNumber);
 	}
 
+	@Override
 	public List<PatientSearchResult> searchRecords(QueryContent queryContent) {
 		return transformToSearchResults(patientInfoRepository.findByQueryContent(queryContent));
 	}

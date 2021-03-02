@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.servcies;
+package dr.sens.dental.clinic.services;
 
 import java.io.IOException;
 
@@ -15,21 +15,27 @@ import dr.sens.dental.clinic.pdf.InvoiceTemplate;
 import dr.sens.dental.clinic.pdf.PrescriptionTemplate;
 
 @Service
-public class InvoiceService {
+public class InvoiceServiceImpl implements InvoiceService {
 
-	public void downloadInvoice(HttpServletResponse response) throws DocumentException, IOException {
+	@Override
+	public void downloadInvoice(HttpServletResponse response) {
 		String pdfFileName = String.format("test_%s.pdf", System.currentTimeMillis());
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFileName + "\"");
 
 		Document document = new Document();
-		PdfWriter pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
-		pdfWriter.setPageEvent(new HeaderFooterPageEvent2());
-		document.open();
-		InvoiceTemplate.addInvoiceDetails(document);
-		document.newPage();
-		PrescriptionTemplate.addPrescriptionDetails(document);
-		document.close();
+		PdfWriter pdfWriter;
+		try {
+			pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
+			pdfWriter.setPageEvent(new HeaderFooterPageEvent2());
+			document.open();
+			InvoiceTemplate.addInvoiceDetails(document);
+			document.newPage();
+			PrescriptionTemplate.addPrescriptionDetails(document);
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			document.close();
+		}
 	}
-
 }

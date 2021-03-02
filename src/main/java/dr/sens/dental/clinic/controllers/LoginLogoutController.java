@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import dr.sens.dental.clinic.models.LoginForm;
-import dr.sens.dental.clinic.servcies.LoginService;
-import dr.sens.dental.clinic.servcies.SessionManagerService;
+import dr.sens.dental.clinic.services.LoginService;
+import dr.sens.dental.clinic.services.SessionManagerService;
 
 @Controller
 public class LoginLogoutController {

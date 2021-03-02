@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.models.PatientSearchResult;
 import dr.sens.dental.clinic.models.QueryContent;
-import dr.sens.dental.clinic.servcies.PatientInfoService;
-import dr.sens.dental.clinic.servcies.SessionManagerService;
+import dr.sens.dental.clinic.services.PatientInfoService;
+import dr.sens.dental.clinic.services.SessionManagerService;
 
 @Controller
 public class QueryController {

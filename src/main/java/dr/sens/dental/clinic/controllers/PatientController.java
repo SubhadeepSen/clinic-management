@@ -26,8 +26,8 @@ import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.documents.PersonalInfo;
 import dr.sens.dental.clinic.exceptions.DentalClinicValidationException;
 import dr.sens.dental.clinic.models.PatientForm;
-import dr.sens.dental.clinic.servcies.PatientInfoService;
-import dr.sens.dental.clinic.servcies.SessionManagerService;
+import dr.sens.dental.clinic.services.PatientInfoService;
+import dr.sens.dental.clinic.services.SessionManagerService;
 import dr.sens.dental.clinic.utils.DentalClinicTransformerUtils;
 import dr.sens.dental.clinic.utils.DentalClinicValidationUtils;
 
