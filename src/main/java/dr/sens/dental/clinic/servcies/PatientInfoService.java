@@ -10,16 +10,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.documents.PersonalInfo;
 import dr.sens.dental.clinic.models.InvoiceForm;
 import dr.sens.dental.clinic.models.PatientForm;
+import dr.sens.dental.clinic.models.PatientSearchResult;
 import dr.sens.dental.clinic.models.QueryContent;
 import dr.sens.dental.clinic.repository.PatientInfoRepository;
 
@@ -58,14 +61,48 @@ public class PatientInfoService {
 		return patientInfoRepository.findByPatientIdAndOrPhoneNumber(null, phoneNumber);
 	}
 
-	public List<PatientInfo> searchRecords(QueryContent queryContent) {
-		return patientInfoRepository.findByQueryContent(queryContent);
+	public List<PatientSearchResult> searchRecords(QueryContent queryContent) {
+		return transformToSearchResults(patientInfoRepository.findByQueryContent(queryContent));
 	}
 
 	private PatientInfo buildNewPatientInfo(PersonalInfo personalInfo, Consultation consultation) {
 		List<Consultation> consultations = new ArrayList<>();
 		consultations.add(consultation);
 		return new PatientInfo(personalInfo, consultations);
+	}
+
+	private List<PatientSearchResult> transformToSearchResults(List<PatientInfo> patientInfos) {
+		List<PatientSearchResult> patientSearchResults = new ArrayList<>();
+		patientInfos.stream().forEach(patientInfo -> {
+			List<Consultation> consultations = patientInfo.getConsultations();
+			if (CollectionUtils.isEmpty(consultations)) {
+				PatientSearchResult patientSearchResult = new PatientSearchResult();
+				patientSearchResult.setPatientId(patientInfo.getPatientId());
+				populatePersonalInfo(patientSearchResult, patientInfo.getPersonalInfo());
+				patientSearchResults.add(patientSearchResult);
+			} else {
+				consultations.stream().forEach(consultation -> {
+					PatientSearchResult patientSearchResult = new PatientSearchResult();
+					patientSearchResult.setPatientId(patientInfo.getPatientId());
+					populatePersonalInfo(patientSearchResult, patientInfo.getPersonalInfo());
+					patientSearchResult.setDateOfVisit(consultation.getDateOfVisit().toString());
+					if (Objects.nonNull(consultation.getNextAppointmentDate())) {
+						patientSearchResult.setNextAppointmentDate(consultation.getNextAppointmentDate().toString());
+					}
+					patientSearchResults.add(patientSearchResult);
+				});
+			}
+
+		});
+		return patientSearchResults;
+	}
+
+	private void populatePersonalInfo(PatientSearchResult patientSearchResult, PersonalInfo personalInfo) {
+		patientSearchResult.setAge(String.valueOf(personalInfo.getAge()));
+		patientSearchResult.setEmailId(personalInfo.getEmailId());
+		patientSearchResult.setFullName(personalInfo.getFullName());
+		patientSearchResult.setGender(personalInfo.getGender().getValue());
+		patientSearchResult.setPhoneNumber(personalInfo.getPhoneNumber());
 	}
 
 }
