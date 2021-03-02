@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.services;
+package dr.sens.dental.clinic.services.impl;
 
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes.INVOICE_FORM;
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes.PATIENT_FORM;
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import dr.sens.dental.clinic.services.SessionManagerService;
 
 @Service
 public class SessionManagerServiceImpl implements SessionManagerService {

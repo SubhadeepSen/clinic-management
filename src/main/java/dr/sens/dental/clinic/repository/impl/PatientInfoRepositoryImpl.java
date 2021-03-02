@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.repository;
+package dr.sens.dental.clinic.repository.impl;
 
 import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.CONSULTATIONS;
 import static dr.sens.dental.clinic.constants.DBConstants.QueryAttributes.DATE_OF_VISIT;
@@ -28,6 +28,7 @@ import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.exceptions.DentalClinicOperationException;
 import dr.sens.dental.clinic.models.QueryContent;
+import dr.sens.dental.clinic.repository.PatientInfoRepository;
 
 @Repository
 public class PatientInfoRepositoryImpl implements PatientInfoRepository {

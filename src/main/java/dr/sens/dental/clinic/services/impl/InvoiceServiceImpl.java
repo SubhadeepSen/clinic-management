@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.services;
+package dr.sens.dental.clinic.services.impl;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dr.sens.dental.clinic.pdf.HeaderFooterPageEvent2;
 import dr.sens.dental.clinic.pdf.InvoiceTemplate;
 import dr.sens.dental.clinic.pdf.PrescriptionTemplate;
+import dr.sens.dental.clinic.services.InvoiceService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {

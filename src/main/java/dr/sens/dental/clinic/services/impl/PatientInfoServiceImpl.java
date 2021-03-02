@@ -1,4 +1,4 @@
-package dr.sens.dental.clinic.services;
+package dr.sens.dental.clinic.services.impl;
 
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.INVOICE_ID;
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PATIENT_ID;
@@ -25,6 +25,7 @@ import dr.sens.dental.clinic.models.PatientForm;
 import dr.sens.dental.clinic.models.PatientSearchResult;
 import dr.sens.dental.clinic.models.QueryContent;
 import dr.sens.dental.clinic.repository.PatientInfoRepository;
+import dr.sens.dental.clinic.services.PatientInfoService;
 
 @Service
 public class PatientInfoServiceImpl implements PatientInfoService {
