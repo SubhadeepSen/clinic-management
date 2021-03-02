@@ -90,12 +90,22 @@
 							<div class="col-sm-6 col-md-6 col-lg-6">
 								<form:input path="workDoneAmounts['0'].workDone" type="text"
 									name="workDoneAmounts0" class="form-control"
-									id="workDoneAmounts" value="" />
+									id="workDoneAmounts" required="true" />
+								<span
+									class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
+									data-toggle="tooltip"
+									title="Work done information must be entered"
+									data-placement="left"></span>
 							</div>
 							<div class="col-sm-5 col-md-5 col-lg-5">
 								<form:input path="workDoneAmounts['0'].amount" type="text"
 									name="workDoneAmounts0" class="form-control text-center"
-									id="workDoneAmounts" value="0.0" />
+									id="workDoneAmounts" value="0.0" required="true" />
+								<span
+									class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
+									data-toggle="tooltip"
+									title="Charged amount for this work must be entered"
+									data-placement="left"></span>
 							</div>
 							<div class="col-sm-1 col-md-1 col-lg-1">
 								<label class="invoice-add-row" id="add-invoice-row">+</label>
@@ -109,12 +119,22 @@
 								<div class="col-sm-6 col-md-6 col-lg-6">
 									<form:input path="workDoneAmounts[${status.index}].workDone"
 										type="text" name="workDone" class="form-control" id="workDone"
-										value="${workDoneAmount.workDone}" />
+										value="${workDoneAmount.workDone}" required="true" />
+									<span
+										class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
+										data-toggle="tooltip"
+										title="Work done information must be entered"
+										data-placement="left"></span>
 								</div>
 								<div class="col-sm-5 col-md-5 col-lg-5">
 									<form:input path="workDoneAmounts[${status.index}].amount"
 										type="text" name="amount" class="form-control text-center"
-										id="amount" value="${workDoneAmount.amount}" />
+										id="amount" value="${workDoneAmount.amount}" required="true" />
+									<span
+										class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
+										data-toggle="tooltip"
+										title="Charged amount for this work must be entered"
+										data-placement="left"></span>
 								</div>
 								<c:choose>
 									<c:when
