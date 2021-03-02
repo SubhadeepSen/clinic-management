@@ -11,6 +11,8 @@ import dr.sens.dental.clinic.models.PatientForm;
 import dr.sens.dental.clinic.models.WorkDoneAmount;
 
 public class DentalClinicValidationUtils {
+	
+	// TODO: create constants, validate invoice form fields
 
 	private DentalClinicValidationUtils() {
 	}

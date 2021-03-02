@@ -41,6 +41,7 @@ public class SessionManagerServiceImpl implements SessionManagerService {
 		session.invalidate();
 	}
 
+	@Override
 	public void clearSessionData(HttpSession session) {
 		session.removeAttribute(INVOICE_FORM);
 		session.removeAttribute(PATIENT_FORM);

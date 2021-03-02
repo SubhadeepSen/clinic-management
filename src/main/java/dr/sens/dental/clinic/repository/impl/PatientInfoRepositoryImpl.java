@@ -43,7 +43,7 @@ public class PatientInfoRepositoryImpl implements PatientInfoRepository {
 
 	@Override
 	public PatientInfo updateExistingPatientInfoConsultations(String patientId, Consultation consultation) {
-		// TODO Auto-generated method stub
+		// TODO write logic to update
 		return null;
 	}
 
