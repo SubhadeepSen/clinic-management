@@ -25,6 +25,10 @@ public class DentalClinicTransformerUtils {
 		patientForm.getOnExaminations().removeIf(StringUtils::isBlank);
 		patientForm.getWorkDones().removeIf(StringUtils::isBlank);
 	}
+	
+	public static void removeEmptyItems(InvoiceForm invoiceForm) {
+		invoiceForm.getWorkDoneAmounts().removeIf(wda -> StringUtils.isBlank(wda.getWorkDone()) && StringUtils.isBlank(wda.getAmount()));
+	}
 
 	public static PersonalInfo transformToPersonalInfo(PatientForm patientForm, InvoiceForm invoiceForm) {
 		PersonalInfo personalInfo = new PersonalInfo();

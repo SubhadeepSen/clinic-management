@@ -13,8 +13,19 @@
 <body class="container-fluid">
 	<%@include file="header.jsp"%>
 	<div class="container">
+		<div class="row" id="errorMessageDiv" class="login-error-message text-center">
+			<c:if test="${not empty workDoneError}">
+				${workDoneError}
+			</c:if>
+			<c:if test="${not empty amountError}">
+				${amountError}
+			</c:if>
+			<c:if test="${not empty totalAmountError}">
+				${totalAmountError}
+			</c:if>
+		</div>
 		<form:form action="/reviewInvoiceForm" method="POST"
-			class="form-horizontal" modelAttribute="invoiceForm">
+			class="form-horizontal" modelAttribute="invoiceForm" id="invoiceform">
 			<div class="row">
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="fullName">Full
@@ -90,7 +101,7 @@
 							<div class="col-sm-6 col-md-6 col-lg-6">
 								<form:input path="workDoneAmounts['0'].workDone" type="text"
 									name="workDoneAmounts0" class="form-control"
-									id="workDoneAmounts" required="true" />
+									id="workDoneAmounts" />
 								<span
 									class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
 									data-toggle="tooltip"
@@ -100,7 +111,7 @@
 							<div class="col-sm-5 col-md-5 col-lg-5">
 								<form:input path="workDoneAmounts['0'].amount" type="text"
 									name="workDoneAmounts0" class="form-control text-center"
-									id="workDoneAmounts" value="0.0" required="true" />
+									id="workDoneAmounts" value="0.0" />
 								<span
 									class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
 									data-toggle="tooltip"
@@ -119,7 +130,7 @@
 								<div class="col-sm-6 col-md-6 col-lg-6">
 									<form:input path="workDoneAmounts[${status.index}].workDone"
 										type="text" name="workDone" class="form-control" id="workDone"
-										value="${workDoneAmount.workDone}" required="true" />
+										value="${workDoneAmount.workDone}" />
 									<span
 										class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
 										data-toggle="tooltip"
@@ -129,7 +140,7 @@
 								<div class="col-sm-5 col-md-5 col-lg-5">
 									<form:input path="workDoneAmounts[${status.index}].amount"
 										type="text" name="amount" class="form-control text-center"
-										id="amount" value="${workDoneAmount.amount}" required="true" />
+										id="amount" value="${workDoneAmount.amount}" />
 									<span
 										class="custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden"
 										data-toggle="tooltip"

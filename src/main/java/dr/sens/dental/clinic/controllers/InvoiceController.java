@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import dr.sens.dental.clinic.constants.ClinicManagementConstants.SessionAttributes;
+import dr.sens.dental.clinic.exceptions.DentalClinicValidationException;
 import dr.sens.dental.clinic.models.InvoiceForm;
 import dr.sens.dental.clinic.models.PatientForm;
 import dr.sens.dental.clinic.services.PatientInfoService;
 import dr.sens.dental.clinic.services.SessionManagerService;
+import dr.sens.dental.clinic.utils.DentalClinicTransformerUtils;
+import dr.sens.dental.clinic.utils.DentalClinicValidationUtils;
 
 @Controller
 public class InvoiceController {
@@ -63,6 +67,17 @@ public class InvoiceController {
 		if (!sessionManagerService.isValidSession(session)) {
 			return REDIRECT_TO_LOGIN;
 		}
+
+		try {
+			DentalClinicValidationUtils.validateInvoiceForm(invoiceForm);
+		} catch (DentalClinicValidationException e) {
+			if (StringUtils.isNotBlank(e.getErrorField())) {
+				model.addAttribute(e.getErrorField(), e.getMessage());
+			}
+			return INVOICE_FORM_PAGE;
+		}
+
+		DentalClinicTransformerUtils.removeEmptyItems(invoiceForm);
 
 		PatientForm patientForm = (PatientForm) sessionManagerService.getSessionAttribute(session,
 				SessionAttributes.PATIENT_FORM);

@@ -4,7 +4,7 @@
 		elementInfo.currentElement = this;
 		elementInfo.elementClassName = "invoiceRow";
 		elementInfo.removeInvoiceRowDomString = "<div class=\"col-sm-1 col-md-1 col-lg-1\"> <label class=\"invoice-remove-row\" id=\"remove-invoice-row\">-</label> </div>";
-		elementInfo.addInvoiceRowDomString = "<div class=\"row invoiceRow margin-top-10px\"> <div class=\"col-sm-6 col-md-6 col-lg-6\"> <input id=\"workDone\" name=\"workDoneAmounts['pos'].workDone\" type=\"text\" class=\"form-control\" required=\"true\"> <span class=\"custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden\" data-toggle=\"tooltip\" title=\"\" data-placement=\"left\" data-original-title=\"Work done information must be entered\"></span> </div> <div class=\"col-sm-5 col-md-5 col-lg-5\"> <input id=\"amount\" name=\"workDoneAmounts[1].amount\" type=\"text\" class=\"form-control text-center\" value=\"0.0\" required=\"true\"> <span class=\"custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden\" data-toggle=\"tooltip\" title=\"\" data-placement=\"left\" data-original-title=\"Charged amount for this work must be entered\"></span> </div> <div class=\"col-sm-1 col-md-1 col-lg-1\"> <label class=\"invoice-add-row\" id=\"add-invoice-row\">+</label> <label class=\"invoice-remove-row\" id=\"remove-invoice-row\">-</label> </div> </div>";
+		elementInfo.addInvoiceRowDomString = "<div class=\"row invoiceRow margin-top-10px\"> <div class=\"col-sm-6 col-md-6 col-lg-6\"> <input id=\"workDone\" name=\"workDoneAmounts[pos].workDone\" type=\"text\" class=\"form-control\" required=\"true\"> <span class=\"custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden\" data-toggle=\"tooltip\" title=\"\" data-placement=\"left\" data-original-title=\"Work done information must be entered\"></span> </div> <div class=\"col-sm-5 col-md-5 col-lg-5\"> <input id=\"amount\" name=\"workDoneAmounts[pos].amount\" type=\"text\" class=\"form-control text-center\" value=\"0.0\" required=\"true\"> <span class=\"custom-tootip glyphicon glyphicon-info-sign error-glyphicon hidden\" data-toggle=\"tooltip\" title=\"\" data-placement=\"left\" data-original-title=\"Charged amount for this work must be entered\"></span> </div> <div class=\"col-sm-1 col-md-1 col-lg-1\"> <label class=\"invoice-add-row\" id=\"add-invoice-row\">+</label> <label class=\"invoice-remove-row\" id=\"remove-invoice-row\">-</label> </div> </div>";
 		elementInfo.elementParentDivId = "#invoiceParentDiv";	
 		addInvoiceRow(elementInfo);
 		$('[data-toggle="tooltip"]').tooltip();
@@ -26,7 +26,7 @@
 		let inputFieldName = $inputField.attr('name');
 		let inputFieldValue = $inputField.val();
 		
-		if(inputFieldValue === '' || isNaN(parseFloat(inputFieldValue))) {
+		if(inputFieldValue === '' || (inputFieldName.includes('amount') && isNaN(parseFloat(inputFieldValue)))) {
 			$inputField.css("border-color", "red");
 			$inputField.parent().find('span').removeClass('hidden');
 		} else {
@@ -38,6 +38,30 @@
 	
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();   
+	});
+	
+	$("#next").on('click', function(e){
+		e.preventDefault();
+		let totalAmount = 0.0;
+		let totalAmountDisplayValue = $('#totalAmount').val();
+		let isEmptyInputField = false;
+		$('input').each(function(){
+			let $inputField = $(this);
+			let inputFieldName = $inputField.attr('name');
+			let inputFieldValue = $inputField.val();
+			if (inputFieldName.includes('amount')){
+				totalAmount = totalAmount + parseFloat(inputFieldValue);
+			}
+			if(inputFieldValue === ''){
+				isEmptyInputField = true;
+				$inputField.css("border-color", "red");
+				$inputField.parent().find('span').removeClass('hidden');
+			}
+		});
+		
+		if(totalAmountDisplayValue == totalAmount && !isEmptyInputField){
+			$('#invoiceform').submit();
+		}
 	});
 	
 })();
@@ -75,6 +99,7 @@ function removeInvoiceRow(elementInfo){
 
 function updateTotalAmount(){
 	let totalAmount = 0.0;
+	let prevTotalAmount = $('#totalAmount').val();
 	$('input').each(function(){
 		let $inputField = $(this);
 		let inputFieldName = $inputField.attr('name');
@@ -82,6 +107,7 @@ function updateTotalAmount(){
 			totalAmount = totalAmount + parseFloat($inputField.val());
 		}
 	});
+	totalAmount = isNaN(totalAmount)?prevTotalAmount:totalAmount;
 	$('#totalAmount').val(totalAmount);
 }
 

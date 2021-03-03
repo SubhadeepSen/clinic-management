@@ -11,8 +11,6 @@ import dr.sens.dental.clinic.models.PatientForm;
 import dr.sens.dental.clinic.models.WorkDoneAmount;
 
 public class DentalClinicValidationUtils {
-	
-	// TODO: create constants, validate invoice form fields
 
 	private DentalClinicValidationUtils() {
 	}
@@ -38,11 +36,36 @@ public class DentalClinicValidationUtils {
 	}
 
 	public static void validateInvoiceForm(InvoiceForm invoiceForm) {
+		List<WorkDoneAmount> workDoneAmounts = invoiceForm.getWorkDoneAmounts();
+		WorkDoneAmount wda = null;
+		double totalAmount = 0.0;
+		double formTotalAmount = 0.0;
 
-	}
-	
-	public static void validateInvoiceTotalAmount(List<WorkDoneAmount> workDoneAmounts, String totalAmount) {
-		
+		for (int index = 0; index < workDoneAmounts.size(); index++) {
+			wda = workDoneAmounts.get(index);
+			checkIfEmpty(wda.getWorkDone(), String.format("workDoneError", index), "work done information is required");
+			checkIfEmpty(wda.getAmount(), String.format("amountError", index),
+					String.format("amount is required for %s", wda.getWorkDone()));
+			try {
+				totalAmount = totalAmount + Double.parseDouble(wda.getAmount());
+			} catch (NumberFormatException e) {
+				throw new DentalClinicValidationException(String.format("amountError", index),
+						String.format("Invalid amount %s for %s", wda.getAmount(), wda.getWorkDone()));
+			}
+		}
+
+		try {
+			formTotalAmount = Double.parseDouble(invoiceForm.getTotalAmount());
+		} catch (NumberFormatException e) {
+			throw new DentalClinicValidationException("totalAmountError",
+					String.format("Invalid total amount %s", wda.getAmount()));
+		}
+
+		if (totalAmount != formTotalAmount) {
+			throw new DentalClinicValidationException("totalAmountError", String.format(
+					"Mismatch found in total amount, calculated total amount is %s but display total amount is %s",
+					totalAmount, formTotalAmount));
+		}
 	}
 
 	private static void checkIfEmpty(String value, String errorField, String errorMessage) {

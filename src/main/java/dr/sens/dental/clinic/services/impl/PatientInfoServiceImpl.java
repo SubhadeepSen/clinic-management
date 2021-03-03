@@ -4,7 +4,6 @@ import static dr.sens.dental.clinic.constants.ClinicManagementConstants.INVOICE_
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PATIENT_ID;
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToConsultation;
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToPersonalInfo;
-import static dr.sens.dental.clinic.utils.DentalClinicValidationUtils.validateInvoiceTotalAmount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +34,6 @@ public class PatientInfoServiceImpl implements PatientInfoService {
 
 	@Override
 	public Map<String, String> insertOrUpdate(PatientForm patientForm, InvoiceForm invoiceForm) {
-		validateInvoiceTotalAmount(invoiceForm.getWorkDoneAmounts(), invoiceForm.getTotalAmount());
-
 		PersonalInfo personalInfo = transformToPersonalInfo(patientForm, invoiceForm);
 		Consultation consultation = transformToConsultation(patientForm, invoiceForm);
 		String patientId = patientInfoRepository.getPatientIdIfExits(personalInfo.getPhoneNumber());
