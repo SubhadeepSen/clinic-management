@@ -13,7 +13,8 @@
 	<div class="container text-center margin-top-100px">
 		<p class="font-size-30px">Thank you.</p>
 		<p class="font-size-20px">
-			Invoice <i><b>#${invoiceId}</b></i> has been successfully processed.
+			Record has been successfully processed with Patient ID <i><b>${patientId}</b></i><br>
+			and Invoice ID <i><b>${invoiceId}</b></i>
 		</p>
 		<div
 			class="form-group margin-top-30px margin-bottom-100px text-center">
@@ -23,6 +24,8 @@
 				class="btn btn-primary button-150px margin-right-30px">Print
 				Invoice</a>
 		</div>
+		<p id="patientId" value="${patientId}" class="hidden"></p>
+		<p id="invoiceId" value="${invoiceId}" class="hidden"></p>
 	</div>
 	<script type="text/javascript" src="js/confirmation.js"></script>
 </body>

@@ -103,7 +103,7 @@ public class InvoiceController {
 
 		Map<String, String> ids = patientInfoService.insertOrUpdate(patientForm, invoiceForm);
 		for (Entry<String, String> id : ids.entrySet()) {
-			sessionManagerService.setSessionAttribute(session, id.getKey(), id.getValue());
+			model.addAttribute(id.getKey(), id.getValue());
 		}
 
 		return CONFIRMATION_PAGE;
