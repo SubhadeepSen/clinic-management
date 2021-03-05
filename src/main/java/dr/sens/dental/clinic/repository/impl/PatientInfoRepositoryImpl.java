@@ -21,8 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+
+import com.mongodb.client.result.UpdateResult;
 
 import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.PatientInfo;
@@ -42,9 +45,14 @@ public class PatientInfoRepositoryImpl implements PatientInfoRepository {
 	}
 
 	@Override
-	public PatientInfo updateExistingPatientInfoConsultations(String patientId, Consultation consultation) {
-		// TODO write logic to update
-		return null;
+	public boolean updateExistingPatientInfoConsultations(String patientId, Consultation consultation) {
+		if (isBlank(patientId)) {
+			throw new DentalClinicOperationException(
+					String.format("provided patient id is [%s], operation cannot be performed", patientId));
+		}
+		UpdateResult updateResult = mongoTemplate.updateFirst(new Query(Criteria.where(PATIENT_ID).is(patientId)),
+				new Update().push(CONSULTATIONS, consultation), PatientInfo.class);
+		return updateResult.wasAcknowledged();
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public interface PatientInfoRepository {
 
 	public PatientInfo insertNewPatientInfo(PatientInfo patientInfo);
 
-	public PatientInfo updateExistingPatientInfoConsultations(String patientId, Consultation consultation);
+	public boolean updateExistingPatientInfoConsultations(String patientId, Consultation consultation);
 
 	public PatientInfo findByPatientIdAndOrPhoneNumber(String patientId, String phoneNumber);
 
