@@ -1,5 +1,7 @@
 package dr.sens.dental.clinic.utils;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDate;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +10,7 @@ import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.Gender;
 import dr.sens.dental.clinic.documents.Invoice;
 import dr.sens.dental.clinic.documents.PersonalInfo;
+import dr.sens.dental.clinic.exceptions.DentalClinicOperationException;
 import dr.sens.dental.clinic.models.InvoiceForm;
 import dr.sens.dental.clinic.models.PatientForm;
 
@@ -17,6 +20,9 @@ public class DentalClinicTransformerUtils {
 	}
 
 	public static void removeEmptyItems(PatientForm patientForm) {
+		if (isNull(patientForm)) {
+			throw new DentalClinicOperationException("Non null patient form is required in order to transform");
+		}
 		patientForm.getAdvices().removeIf(StringUtils::isBlank);
 		patientForm.getChiefComplaints().removeIf(StringUtils::isBlank);
 		patientForm.getInvestigations().removeIf(StringUtils::isBlank);
@@ -25,12 +31,20 @@ public class DentalClinicTransformerUtils {
 		patientForm.getOnExaminations().removeIf(StringUtils::isBlank);
 		patientForm.getWorkDones().removeIf(StringUtils::isBlank);
 	}
-	
+
 	public static void removeEmptyItems(InvoiceForm invoiceForm) {
-		invoiceForm.getWorkDoneAmounts().removeIf(wda -> StringUtils.isBlank(wda.getWorkDone()) && StringUtils.isBlank(wda.getAmount()));
+		if (isNull(invoiceForm)) {
+			throw new DentalClinicOperationException("Non null invoice form is required in order to transform");
+		}
+		invoiceForm.getWorkDoneAmounts()
+				.removeIf(wda -> StringUtils.isBlank(wda.getWorkDone()) && StringUtils.isBlank(wda.getAmount()));
 	}
 
 	public static PersonalInfo transformToPersonalInfo(PatientForm patientForm, InvoiceForm invoiceForm) {
+		if (isNull(patientForm) || isNull(invoiceForm)) {
+			throw new DentalClinicOperationException(
+					"Non null patient form and invoice form are required in order to transform");
+		}
 		PersonalInfo personalInfo = new PersonalInfo();
 		personalInfo.setAddress(patientForm.getAddress());
 		personalInfo.setAge(Integer.valueOf(patientForm.getAge()));
@@ -43,6 +57,10 @@ public class DentalClinicTransformerUtils {
 	}
 
 	public static Consultation transformToConsultation(PatientForm patientForm, InvoiceForm invoiceForm) {
+		if (isNull(patientForm) || isNull(invoiceForm)) {
+			throw new DentalClinicOperationException(
+					"Non null patient form and invoice form are required in order to transform");
+		}
 		Consultation consultation = new Consultation();
 		consultation.setAdvices(patientForm.getAdvices());
 		consultation.setChiefComplaints(patientForm.getChiefComplaints());

@@ -1,5 +1,7 @@
 package dr.sens.dental.clinic.utils;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,6 +18,9 @@ public class DentalClinicValidationUtils {
 	}
 
 	public static void validatePatientForm(PatientForm patientForm) {
+		if (isNull(patientForm)) {
+			throw new DentalClinicValidationException("Non null patient form is required");
+		}
 		checkIfEmpty(patientForm.getFullName(), "fullNameError", "Full Name is required");
 		checkIfEmpty(patientForm.getAge(), "ageError", "Age is required");
 		checkIfEmpty(patientForm.getGender(), "genderError", "Gender is required");
@@ -36,6 +41,9 @@ public class DentalClinicValidationUtils {
 	}
 
 	public static void validateInvoiceForm(InvoiceForm invoiceForm) {
+		if (isNull(invoiceForm)) {
+			throw new DentalClinicValidationException("Non null invoice form is required");
+		}
 		List<WorkDoneAmount> workDoneAmounts = invoiceForm.getWorkDoneAmounts();
 		WorkDoneAmount wda = null;
 		double totalAmount = 0.0;
