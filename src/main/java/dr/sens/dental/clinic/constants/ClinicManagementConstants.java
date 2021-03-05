@@ -54,5 +54,15 @@ public final class ClinicManagementConstants {
 		public static final String PATIENT_DETAILS_PAGE = "patientDetails";
 		public static final String SEARCH_RECORDS_PAGE = "searchRecords";
 	}
+	
+	public static class Regex {
+		private Regex() {
+		}
+
+		public static final String EMAIL_REGEX = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		public static final String PHONE_NUMBER_REGEX = "^\\d{10}$";
+		public static final String AGE_REGEX = "^\\d{2}$";
+		public static final String ALPHABETS_REGEX = "^[a-z A-Z]+";
+	}
 
 }

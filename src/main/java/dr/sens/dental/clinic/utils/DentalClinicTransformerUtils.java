@@ -1,5 +1,7 @@
 package dr.sens.dental.clinic.utils;
 
+import static dr.sens.dental.clinic.constants.ClinicManagementErrors.Messages.NULL_OBJECTS_ERR_MSG;
+import static dr.sens.dental.clinic.constants.ClinicManagementErrors.Messages.NULL_OBJECT_ERR_MSG;
 import static java.util.Objects.isNull;
 
 import java.time.LocalDate;
@@ -16,12 +18,15 @@ import dr.sens.dental.clinic.models.PatientForm;
 
 public class DentalClinicTransformerUtils {
 
+	private static final String INVOICE_FORM = "invoice form";
+	private static final String PATIENT_FORM = "patient form";
+
 	private DentalClinicTransformerUtils() {
 	}
 
 	public static void removeEmptyItems(PatientForm patientForm) {
 		if (isNull(patientForm)) {
-			throw new DentalClinicOperationException("Non null patient form is required in order to transform");
+			throw new DentalClinicOperationException(String.format(NULL_OBJECT_ERR_MSG, PATIENT_FORM));
 		}
 		patientForm.getAdvices().removeIf(StringUtils::isBlank);
 		patientForm.getChiefComplaints().removeIf(StringUtils::isBlank);
@@ -34,7 +39,7 @@ public class DentalClinicTransformerUtils {
 
 	public static void removeEmptyItems(InvoiceForm invoiceForm) {
 		if (isNull(invoiceForm)) {
-			throw new DentalClinicOperationException("Non null invoice form is required in order to transform");
+			throw new DentalClinicOperationException(String.format(NULL_OBJECT_ERR_MSG, INVOICE_FORM));
 		}
 		invoiceForm.getWorkDoneAmounts()
 				.removeIf(wda -> StringUtils.isBlank(wda.getWorkDone()) && StringUtils.isBlank(wda.getAmount()));
@@ -42,8 +47,7 @@ public class DentalClinicTransformerUtils {
 
 	public static PersonalInfo transformToPersonalInfo(PatientForm patientForm, InvoiceForm invoiceForm) {
 		if (isNull(patientForm) || isNull(invoiceForm)) {
-			throw new DentalClinicOperationException(
-					"Non null patient form and invoice form are required in order to transform");
+			throw new DentalClinicOperationException(String.format(NULL_OBJECTS_ERR_MSG, PATIENT_FORM, INVOICE_FORM));
 		}
 		PersonalInfo personalInfo = new PersonalInfo();
 		personalInfo.setAddress(patientForm.getAddress());
@@ -58,8 +62,7 @@ public class DentalClinicTransformerUtils {
 
 	public static Consultation transformToConsultation(PatientForm patientForm, InvoiceForm invoiceForm) {
 		if (isNull(patientForm) || isNull(invoiceForm)) {
-			throw new DentalClinicOperationException(
-					"Non null patient form and invoice form are required in order to transform");
+			throw new DentalClinicOperationException(String.format(NULL_OBJECTS_ERR_MSG, PATIENT_FORM, INVOICE_FORM));
 		}
 		Consultation consultation = new Consultation();
 		consultation.setAdvices(patientForm.getAdvices());
