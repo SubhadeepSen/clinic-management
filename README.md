@@ -88,9 +88,11 @@ INP
 ### Database (Document Based)
 - Mongo DB
 
-### Framework (Web App Development)
+### Backend (Java 8)
 - Springboot (to create an executable archieve with all resources and with embedded tomcat)
-- User Interface (HTML, CSS, Javascript, JQuery, Bootstrap v3)
+
+### Front End
+- HTML, CSS, Javascript, JQuery, Bootstrap v3
 
 ---
 
