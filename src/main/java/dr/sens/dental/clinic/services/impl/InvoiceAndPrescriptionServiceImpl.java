@@ -10,6 +10,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.pdf.HeaderFooterPageEvent2;
 import dr.sens.dental.clinic.pdf.InvoiceTemplate;
 import dr.sens.dental.clinic.pdf.PrescriptionTemplate;
@@ -19,7 +20,7 @@ import dr.sens.dental.clinic.services.InvoiceAndPrescriptionService;
 public class InvoiceAndPrescriptionServiceImpl implements InvoiceAndPrescriptionService {
 
 	@Override
-	public void createAndWriteToResponseStream(HttpServletResponse response, String patientId, String invoiceId) {
+	public void createAndWritePdfToResponseStream(HttpServletResponse response, PatientInfo patientInfo) {
 		String pdfFileName = String.format("test_%s.pdf", System.currentTimeMillis());
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFileName + "\"");

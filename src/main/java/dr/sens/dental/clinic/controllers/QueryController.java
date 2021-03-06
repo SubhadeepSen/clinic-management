@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dr.sens.dental.clinic.documents.PatientInfo;
+import dr.sens.dental.clinic.exceptions.DentalClinicOperationException;
 import dr.sens.dental.clinic.models.PatientSearchResult;
 import dr.sens.dental.clinic.models.QueryContent;
 import dr.sens.dental.clinic.services.PatientInfoService;
@@ -58,6 +59,12 @@ public class QueryController {
 		}
 
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
+
+		patientInfo.getConsultations().stream()
+				.filter(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) == 0)
+				.findFirst().orElseThrow(
+						() -> new DentalClinicOperationException("Invalid date of visit provided: " + dateOfVisit));
+
 		patientInfo.getConsultations()
 				.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);
 		addToModel(model, PATIENT_INFO, patientInfo);
