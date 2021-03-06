@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 import dr.sens.dental.clinic.documents.UserAccount;
 import dr.sens.dental.clinic.models.LoginForm;
 import dr.sens.dental.clinic.repository.UserAccountRepository;
-import dr.sens.dental.clinic.services.LoginService;
+import dr.sens.dental.clinic.services.AuthenticationService;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Autowired
 	private UserAccountRepository userAccountRepository;
 
 	@Override
-	public boolean isValidLoginData(LoginForm loginForm) {
+	public boolean isValidCredential(LoginForm loginForm) {
 		UserAccount userAccount = new UserAccount(loginForm.getUsername(), loginForm.getPassword());
 		return userAccountRepository.isUserAccountExist(userAccount);
 	}

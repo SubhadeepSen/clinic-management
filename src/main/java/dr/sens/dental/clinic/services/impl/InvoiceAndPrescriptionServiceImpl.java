@@ -13,13 +13,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dr.sens.dental.clinic.pdf.HeaderFooterPageEvent2;
 import dr.sens.dental.clinic.pdf.InvoiceTemplate;
 import dr.sens.dental.clinic.pdf.PrescriptionTemplate;
-import dr.sens.dental.clinic.services.InvoiceService;
+import dr.sens.dental.clinic.services.InvoiceAndPrescriptionService;
 
 @Service
-public class InvoiceServiceImpl implements InvoiceService {
+public class InvoiceAndPrescriptionServiceImpl implements InvoiceAndPrescriptionService {
 
 	@Override
-	public void downloadInvoice(HttpServletResponse response) {
+	public void createAndWriteToResponseStream(HttpServletResponse response, String patientId, String invoiceId) {
 		String pdfFileName = String.format("test_%s.pdf", System.currentTimeMillis());
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFileName + "\"");

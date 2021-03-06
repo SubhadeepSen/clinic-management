@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import dr.sens.dental.clinic.models.LoginForm;
-import dr.sens.dental.clinic.services.LoginService;
+import dr.sens.dental.clinic.services.AuthenticationService;
 import dr.sens.dental.clinic.services.SessionManagerService;
 
 @Controller
-public class LoginLogoutController {
+public class AuthenticationController {
 
 	@Autowired
 	private SessionManagerService sessionManagerService;
 
 	@Autowired
-	private LoginService loginService;
+	private AuthenticationService authenticationService;
 
 	@GetMapping("/")
 	public String getLoginPage(Model model, HttpSession session) {
@@ -41,7 +41,7 @@ public class LoginLogoutController {
 
 	@PostMapping("/login")
 	public String login(@ModelAttribute(LOGIN_FORM) LoginForm loginForm, Model model, HttpSession session) {
-		if (loginService.isValidLoginData(loginForm)) {
+		if (authenticationService.isValidCredential(loginForm)) {
 			loginForm.setPassword(null);
 			sessionManagerService.setSessionAttribute(session, USERNAME, loginForm.getUsername());
 			removeFromModel(model, "errorMessage");
