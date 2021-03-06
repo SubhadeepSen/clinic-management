@@ -108,7 +108,7 @@
 							<td>${patientSearchResult.dateOfVisit}</td>
 							<td>${patientSearchResult.nextAppointmentDate}</td>
 							<td><a
-								href="/patientDetails?patientId=${patientSearchResult.patientId}"
+								href="/patientDetails?patientId=${patientSearchResult.patientId}&dateOfVisit=${patientSearchResult.dateOfVisit}"
 								target="_blank" class="text-decoration-none"><span
 									class="glyphicon glyphicon-new-window"></span> more details</a></td>
 						</tr>

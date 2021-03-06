@@ -8,6 +8,7 @@ import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.PA
 import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.SEARCH_RECORDS_PAGE;
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -50,12 +51,15 @@ public class QueryController {
 	}
 
 	@GetMapping("/patientDetails")
-	public String getPatientDetailsById(@RequestParam String patientId, Model model, HttpSession session) {
+	public String getPatientDetailsById(@RequestParam String patientId, @RequestParam String dateOfVisit, Model model,
+			HttpSession session) {
 		if (!sessionManagerService.isValidSession(session)) {
 			return REDIRECT_TO_LOGIN;
 		}
 
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
+		patientInfo.getConsultations()
+				.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);
 		addToModel(model, PATIENT_INFO, patientInfo);
 
 		return PATIENT_DETAILS_PAGE;

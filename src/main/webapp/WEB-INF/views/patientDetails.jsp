@@ -43,42 +43,79 @@
 			</table>
 
 
-			<c:forEach var="consultation" items="${patientInfo.consultations}">
-				<p>${consultation.dateOfVisit}</p>
-				<c:forEach var="chiefComplaint"
-					items="${consultation.chiefComplaints}">
-					<p>${chiefComplaint}</p>
-				</c:forEach>
-				<c:forEach var="onExamination"
-					items="${consultation.onExaminations}">
-					<p>${onExamination}</p>
-				</c:forEach>
-				<c:forEach var="medicalHistorie"
-					items="${consultation.medicalHistories}">
-					<p>${medicalHistorie}</p>
-				</c:forEach>
-				<c:forEach var="investigation"
-					items="${consultation.investigations}">
-					<p>${investigation}</p>
-				</c:forEach>
-				<c:forEach var="advice" items="${consultation.advices}">
-					<p>${advice}</p>
-				</c:forEach>
-				<c:forEach var="workDone" items="${consultation.workDones}">
-					<p>${workDone}</p>
-				</c:forEach>
-				<c:forEach var="medicine" items="${consultation.medicines}">
-					<p>${medicine}</p>
-				</c:forEach>
-				<p>${consultation.nextAppointmentDate}</p>
-				<p>
-					<a
-						href="/downloadInvoice?invoiceId=${consultation.invoice.invoiceId}"
-						target="_blank" class="text-decoration-none"><span class="glyphicon glyphicon-new-window"></span> Download
-						Invoice</a>
-				</p>
+			<c:forEach var="consultation" items="${patientInfo.consultations}"
+				varStatus="status">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#${consultation.dateOfVisit}_${status.index}">${consultation.dateOfVisit}</a>
+							</h4>
+						</div>
+						<div id="${consultation.dateOfVisit}_${status.index}"
+							class="panel-collapse collapse">
+							<div class="panel-body">
+								<label>Chief Complaint (C/C)</label>
+								<ul>
+									<c:forEach var="chiefComplaint"
+										items="${consultation.chiefComplaints}">
+										<li>${chiefComplaint}</li>
+									</c:forEach>
+								</ul>
+								<label>On Examination (O/E)</label>
+								<ul>
+									<c:forEach var="onExamination"
+										items="${consultation.onExaminations}">
+										<li>${onExamination}</li>
+									</c:forEach>
+								</ul>
+								<label>Medical History</label>
+								<ul>
+									<c:forEach var="medicalHistorie"
+										items="${consultation.medicalHistories}">
+										<li>${medicalHistorie}</li>
+									</c:forEach>
+								</ul>
+								<label>Investigation</label>
+								<ul>
+									<c:forEach var="investigation"
+										items="${consultation.investigations}">
+										<li>${investigation}</li>
+									</c:forEach>
+								</ul>
+								<label>Advice</label>
+								<ul>
+									<c:forEach var="advice" items="${consultation.advices}">
+										<li>${advice}</li>
+									</c:forEach>
+								</ul>
+								<label>Work Done</label>
+								<ul>
+									<c:forEach var="workDone" items="${consultation.workDones}">
+										<li>${workDone}</li>
+									</c:forEach>
+								</ul>
+								<label>Medicine</label>
+								<ul>
+									<c:forEach var="medicine" items="${consultation.medicines}">
+										<li>${medicine}</li>
+									</c:forEach>
+								</ul>
+								<label>Next Appointment Date</label>
+								<p>${consultation.nextAppointmentDate}</p>
+								<div class="margin-top-30px">
+									<a
+										href="/downloadInvoice?patientId=${patientInfo.patientId}&invoiceId=${consultation.invoice.invoiceId}&dateOfVisit=${consultation.dateOfVisit}"
+										target="_blank" class="text-decoration-none"><span
+										class="glyphicon glyphicon-new-window"></span> Download
+										Prescription &amp; Invoice</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</c:forEach>
-
 		</div>
 	</div>
 </body>

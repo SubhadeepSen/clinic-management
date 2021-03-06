@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import dr.sens.dental.clinic.exceptions.DentalClinicOperationException;
 import dr.sens.dental.clinic.services.InvoiceAndPrescriptionService;
@@ -21,9 +21,9 @@ public class InvoiceAndPrescriptionController {
 	@Autowired
 	private SessionManagerService sessionManagerService;
 
-	@GetMapping("/downloadInvoice/{patientId}/{invoiceId}")
-	public void downloadInvoiceAndPrescription(@PathVariable String patientId, @PathVariable String invoiceId, HttpSession session,
-			HttpServletResponse response) throws Exception {
+	@GetMapping("/downloadInvoice")
+	public void downloadInvoiceAndPrescription(@RequestParam String patientId, @RequestParam String invoiceId,
+			@RequestParam String dateOfVisit, HttpSession session, HttpServletResponse response) throws Exception {
 		if (!sessionManagerService.isValidSession(session)) {
 			throw new DentalClinicOperationException("Login in order to download invoice and prescription");
 		}
