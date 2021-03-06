@@ -24,7 +24,7 @@
 
 ## System Architecture
 
-<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/master/documents/architecture.jpg"/></div>
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/architecture.jpg"/></div>
 
 ---
 
