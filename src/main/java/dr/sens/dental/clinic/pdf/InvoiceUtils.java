@@ -1,5 +1,8 @@
 package dr.sens.dental.clinic.pdf;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -10,61 +13,75 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-public class InvoiceTemplate {
+import dr.sens.dental.clinic.documents.Consultation;
+import dr.sens.dental.clinic.documents.PatientInfo;
+import dr.sens.dental.clinic.documents.PersonalInfo;
+import dr.sens.dental.clinic.models.WorkDoneAmount;
 
+public final class InvoiceUtils {
+
+	private static final String DD_MM_YYYY = "dd/MM/yyyy";
 	private static Font boldFont = new Font(Font.FontFamily.HELVETICA, 12f, Font.BOLD);
 	private static Font textFont = new Font(Font.FontFamily.HELVETICA, 12f);
 	private static Font italicUnderlineFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC | Font.UNDERLINE);
 
-	public static void addInvoiceDetails(Document document) throws DocumentException {
-		addNewLine(document, 6);
+	private InvoiceUtils() {
+	}
 
-		document.add(new Chunk(String.format("%10s%2s", "Name:", ""), boldFont));
-		document.add(new Chunk("Subhadeep Sen", italicUnderlineFont));
+	public static void addInvoiceDetails(Document document, PatientInfo patientInfo) throws DocumentException {
+		PersonalInfo personalInfo = patientInfo.getPersonalInfo();
+		Iterator<Consultation> it = patientInfo.getConsultations().iterator();
+		Consultation consultation = null;
 
-		document.add(new Chunk(String.format("%35s%2s", "Age:", ""), boldFont));
-		document.add(new Chunk("23", italicUnderlineFont));
+		while (it.hasNext()) {
+			consultation = it.next();
+			addNewLine(document, 6);
 
-		document.add(new Chunk(String.format("%35s%2s", "Gender:", ""), boldFont));
-		document.add(new Chunk("Male", italicUnderlineFont));
+			document.add(new Chunk(String.format("%10s%2s", "Name:", ""), boldFont));
+			document.add(new Chunk(personalInfo.getFullName(), italicUnderlineFont));
 
-		addNewLine(document);
+			document.add(new Chunk(String.format("%35s%2s", "Age:", ""), boldFont));
+			document.add(new Chunk(String.valueOf(personalInfo.getAge()), italicUnderlineFont));
 
-		document.add(new Chunk(String.format("%13s%2s", "Address:", ""), boldFont));
-		document.add(new Chunk("Banamali Sen Lane, Chawk Bazar, Purulia-723101, West bengal", italicUnderlineFont));
+			document.add(new Chunk(String.format("%35s%2s", "Gender:", ""), boldFont));
+			document.add(new Chunk(personalInfo.getGender().getValue(), italicUnderlineFont));
 
-		addNewLine(document);
+			addNewLine(document);
 
-		document.add(new Chunk(String.format("%15s%2s", "Phone No.:", ""), boldFont));
-		document.add(new Chunk("9944834903", italicUnderlineFont));
+			document.add(new Chunk(String.format("%13s%2s", "Address:", ""), boldFont));
+			document.add(new Chunk(personalInfo.getAddress(), italicUnderlineFont));
 
-		document.add(new Chunk(String.format("%35s%2s", "Email Id:", ""), boldFont));
-		document.add(new Chunk("subhadeep0977@gmail.com", italicUnderlineFont));
+			addNewLine(document);
 
-		addNewLine(document);
+			document.add(new Chunk(String.format("%15s%2s", "Phone No.:", ""), boldFont));
+			document.add(new Chunk(personalInfo.getPhoneNumber(), italicUnderlineFont));
 
-		document.add(new Chunk(String.format("%19s%2s", "Date of Visit:", ""), boldFont));
-		document.add(new Chunk("22/04/2020", italicUnderlineFont));
+			document.add(new Chunk(String.format("%35s%2s", "Email Id:", ""), boldFont));
+			document.add(new Chunk(personalInfo.getEmailId(), italicUnderlineFont));
 
-		addNewLine(document);
-		addNewLine(document);
+			addNewLine(document);
 
-		PdfPTable table = new PdfPTable(2);
-		addTableHeader(table);
+			document.add(new Chunk(String.format("%19s%2s", "Date of Visit:", ""), boldFont));
+			document.add(new Chunk(consultation.getDateOfVisit().format(DateTimeFormatter.ofPattern(DD_MM_YYYY)),
+					italicUnderlineFont));
 
-		table.addCell(createWorkDonePdfCell("1. something 1 has been done"));
-		table.addCell(createAmountPdfCell("490.00"));
+			addNewLine(document);
+			addNewLine(document);
 
-		table.addCell(createWorkDonePdfCell(
-				"2. something 2 has been done dhksjd sjdkf sdj fsd sdfj skd fkshdkf skdfksd fhs dkhf ksdhfksh dkf skdf kdhs"));
-		table.addCell(createAmountPdfCell("234.00"));
+			PdfPTable table = new PdfPTable(2);
+			addTableHeader(table);
 
-		table.addCell(createWorkDonePdfCell("3. something 3 has been done"));
-		table.addCell(createAmountPdfCell("234.00"));
+			for (WorkDoneAmount wda : consultation.getInvoice().getWorkDoneAmounts()) {
+				table.addCell(createWorkDonePdfCell(wda.getWorkDone()));
+				table.addCell(createAmountPdfCell(wda.getAmount()));
+			}
 
-		addTableFooter(table);
-
-		document.add(table);
+			addTotalAmount(table, consultation.getInvoice().getTotalAmount());
+			document.add(table);
+			if (it.hasNext()) {
+				document.newPage();
+			}
+		}
 	}
 
 	private static void addNewLine(Document document) throws DocumentException {
@@ -91,12 +108,12 @@ public class InvoiceTemplate {
 		table.setHeaderRows(1);
 	}
 
-	private static void addTableFooter(PdfPTable table) throws DocumentException {
+	private static void addTotalAmount(PdfPTable table, String totalAmount) throws DocumentException {
 		PdfPCell workDone = new PdfPCell(new Paragraph("Total", boldFont));
 		workDone.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		addCellPadding(workDone);
 		addLightGrayBackground(workDone);
-		PdfPCell amountCharged = new PdfPCell(new Paragraph("12321.00", boldFont));
+		PdfPCell amountCharged = new PdfPCell(new Paragraph(totalAmount, boldFont));
 		amountCharged.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		addCellPadding(amountCharged);
 		addLightGrayBackground(amountCharged);

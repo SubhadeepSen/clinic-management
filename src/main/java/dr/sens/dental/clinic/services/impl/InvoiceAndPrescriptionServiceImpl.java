@@ -11,9 +11,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import dr.sens.dental.clinic.documents.PatientInfo;
-import dr.sens.dental.clinic.pdf.HeaderFooterPageEvent2;
-import dr.sens.dental.clinic.pdf.InvoiceTemplate;
-import dr.sens.dental.clinic.pdf.PrescriptionTemplate;
+import dr.sens.dental.clinic.pdf.HeaderFooterPageEvent;
+import dr.sens.dental.clinic.pdf.InvoiceUtils;
+import dr.sens.dental.clinic.pdf.PrescriptionUtils;
 import dr.sens.dental.clinic.services.InvoiceAndPrescriptionService;
 
 @Service
@@ -21,19 +21,21 @@ public class InvoiceAndPrescriptionServiceImpl implements InvoiceAndPrescription
 
 	@Override
 	public void createAndWritePdfToResponseStream(HttpServletResponse response, PatientInfo patientInfo) {
-		String pdfFileName = String.format("test_%s.pdf", System.currentTimeMillis());
+		String pdfFileName = String.format("%s_%s_%s.pdf",
+				patientInfo.getPersonalInfo().getFullName().replaceAll(" ", "_"), patientInfo.getPatientId(),
+				System.currentTimeMillis());
+
 		response.setContentType("application/pdf");
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + pdfFileName + "\"");
 
 		Document document = new Document();
-		PdfWriter pdfWriter;
 		try {
-			pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
-			pdfWriter.setPageEvent(new HeaderFooterPageEvent2());
+			PdfWriter pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
+			pdfWriter.setPageEvent(new HeaderFooterPageEvent());
 			document.open();
-			InvoiceTemplate.addInvoiceDetails(document);
+			InvoiceUtils.addInvoiceDetails(document, patientInfo);
 			document.newPage();
-			PrescriptionTemplate.addPrescriptionDetails(document);
+			PrescriptionUtils.addPrescriptionDetails(document, patientInfo);
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		} finally {

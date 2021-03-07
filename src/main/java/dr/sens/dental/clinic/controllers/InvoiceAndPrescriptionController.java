@@ -1,6 +1,7 @@
 package dr.sens.dental.clinic.controllers;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,13 +38,16 @@ public class InvoiceAndPrescriptionController {
 
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
 
-		patientInfo.getConsultations().stream()
-				.filter(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) == 0)
-				.findFirst().orElseThrow(
-						() -> new DentalClinicOperationException("Invalid date of visit provided: " + dateOfVisit));
+		if (Objects.isNull(patientInfo)) {
+			throw new DentalClinicOperationException("Patient information not found with id: " + patientId);
+		}
 
 		patientInfo.getConsultations()
 				.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);
+
+		if (patientInfo.getConsultations().isEmpty()) {
+			throw new DentalClinicOperationException("Patient information not found with id: " + patientId);
+		}
 
 		invoiceAndPrescriptionService.createAndWritePdfToResponseStream(response, patientInfo);
 	}

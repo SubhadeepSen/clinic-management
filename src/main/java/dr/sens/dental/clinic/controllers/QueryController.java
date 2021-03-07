@@ -10,6 +10,7 @@ import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
@@ -60,10 +61,9 @@ public class QueryController {
 
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
 
-		patientInfo.getConsultations().stream()
-				.filter(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) == 0)
-				.findFirst().orElseThrow(
-						() -> new DentalClinicOperationException("Invalid date of visit provided: " + dateOfVisit));
+		if (Objects.isNull(patientInfo)) {
+			throw new DentalClinicOperationException("Patient information not found with id: " + patientId);
+		}
 
 		patientInfo.getConsultations()
 				.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);

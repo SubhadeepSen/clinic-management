@@ -13,10 +13,14 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
 	@Override
 	public void onStartPage(PdfWriter writer, Document document) {
 		try {
-			Image header = Image.getInstance("src\\main\\resources\\header.jpg");
-			header.scalePercent(200f);
+			Image header = Image.getInstance("src\\main\\resources\\images\\header.jpg");
+			int indentation = 0;
+			float scaler = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin()
+					- indentation) / header.getWidth()) * 100;
+			header.scalePercent(scaler);
+			header.scaleAbsoluteWidth(document.getPageSize().getWidth());
 			header.setAlignment(Image.MIDDLE);
-			header.setAbsolutePosition(0, document.top() - 70);
+			header.setAbsolutePosition(0, document.top() - 78);
 			document.add(header);
 		} catch (IOException | DocumentException e) {
 			e.printStackTrace();
@@ -26,11 +30,12 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
 	@Override
 	public void onEndPage(PdfWriter writer, Document document) {
 		try {
-			Image header = Image.getInstance("src\\main\\resources\\footer.jpg");
-			header.scalePercent(150f);
-			header.setAlignment(Image.MIDDLE);
-			header.setAbsolutePosition(document.left() - 100, document.bottom() - 100);
-			document.add(header);
+			Image footer = Image.getInstance("src\\main\\resources\\images\\footer.jpg");
+			footer.scaleAbsoluteWidth(document.getPageSize().getWidth());
+			footer.setAlignment(Image.MIDDLE);
+			footer.setAbsolutePosition(document.left() - 36, document.bottom() - 40);
+			footer.scaleAbsoluteWidth(document.getPageSize().getWidth());
+			document.add(footer);
 		} catch (IOException | DocumentException e) {
 			e.printStackTrace();
 		}
