@@ -1,10 +1,17 @@
 (function() {
 	$("#download").on('click', function() {
-		let link = "/downloadInvoice/" + $("#patientId").attr('value') + "/" + $("#invoiceId").attr('value');
-		window.open(link, "_blank");
+		download();
 	});
 	$(document).ready(function() {
-		let link = "/downloadInvoice/" + $("#patientId").attr('value') + "/" + $("#invoiceId").attr('value');
-		window.open(link, "_blank");
+		download();
+		
 	})
+	
+	function download() {
+		let patientId = $("#patientId").attr('value');
+		let invoiceId = $("#invoiceId").attr('value');
+		let dateOfVisit = $("#dateOfVisit").attr('value');
+		let link = "/downloadInvoice?patientId=" + patientId + "&invoiceId=" + invoiceId + "&dateOfVisit=" + dateOfVisit;
+		window.open(link, "_blank");
+	}
 })();

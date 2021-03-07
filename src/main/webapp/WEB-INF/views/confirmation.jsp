@@ -25,6 +25,7 @@
 		</div>
 		<p id="patientId" value="${patientId}" class="hidden"></p>
 		<p id="invoiceId" value="${invoiceId}" class="hidden"></p>
+		<p id="dateOfVisit" value="${dateOfVisit}" class="hidden"></p>
 	</div>
 	<script type="text/javascript" src="js/confirmation.js"></script>
 </body>

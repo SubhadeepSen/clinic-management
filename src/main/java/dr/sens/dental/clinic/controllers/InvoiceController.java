@@ -110,6 +110,7 @@ public class InvoiceController {
 		for (Entry<String, String> id : ids.entrySet()) {
 			model.addAttribute(id.getKey(), id.getValue());
 		}
+		model.addAttribute("dateOfVisit", patientForm.getDateOfVisit());
 
 		return CONFIRMATION_PAGE;
 	}
