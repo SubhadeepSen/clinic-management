@@ -222,3 +222,7 @@ button[type=submit]:hover, button[type=button]:hover, a.btn-primary:hover
 .search-glyphicon:hover, a[target=_blank]:hover {
 	color: #5db55d;
 }
+
+.bold-text {
+	font-weight: bold;
+}

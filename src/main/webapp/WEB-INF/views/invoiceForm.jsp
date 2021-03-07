@@ -178,7 +178,7 @@
 				</div>
 				<div class="col-sm-5 col-md-5 col-lg-5">
 					<form:input path="totalAmount" type="text" name="totalAmount"
-						class="form-control text-center" id="totalAmount"
+						class="form-control text-center bold-text" id="totalAmount"
 						value="${totalAmount}" readonly="true" />
 				</div>
 			</div>
