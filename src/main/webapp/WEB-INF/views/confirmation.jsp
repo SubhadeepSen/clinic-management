@@ -20,9 +20,8 @@
 			class="form-group margin-top-30px margin-bottom-100px text-center">
 			<a href="/" id="goToHome"
 				class="btn btn-primary button-150px margin-right-30px">Go to
-				home</a> <a href="#" id="printInvoice"
-				class="btn btn-primary button-150px margin-right-30px">Print
-				Invoice</a>
+				home</a> <a href="#" id="download"
+				class="btn btn-primary button-150px margin-right-30px">Download</a>
 		</div>
 		<p id="patientId" value="${patientId}" class="hidden"></p>
 		<p id="invoiceId" value="${invoiceId}" class="hidden"></p>

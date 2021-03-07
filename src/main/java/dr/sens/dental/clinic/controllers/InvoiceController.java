@@ -8,6 +8,7 @@ import static dr.sens.dental.clinic.constants.ClinicManagementConstants.Views.RE
 import static dr.sens.dental.clinic.utils.DentalClinicUtils.addToModel;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
@@ -98,6 +99,10 @@ public class InvoiceController {
 				SessionAttributes.PATIENT_FORM);
 		InvoiceForm invoiceForm = (InvoiceForm) sessionManagerService.getSessionAttribute(session,
 				SessionAttributes.INVOICE_FORM);
+
+		if (Objects.isNull(patientForm) && Objects.isNull(invoiceForm)) {
+			return REDIRECT_TO_LOGIN;
+		}
 
 		sessionManagerService.clearSessionData(session);
 

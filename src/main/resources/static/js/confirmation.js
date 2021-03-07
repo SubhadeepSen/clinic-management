@@ -1,5 +1,5 @@
 (function() {
-	$("#printInvoice").on('click', function() {
+	$("#download").on('click', function() {
 		let link = "/downloadInvoice/" + $("#patientId").attr('value') + "/" + $("#invoiceId").attr('value');
 		window.open(link, "_blank");
 	});
