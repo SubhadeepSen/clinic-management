@@ -1,6 +1,7 @@
 package dr.sens.dental.clinic.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dr.sens.dental.clinic.documents.Consultation;
 import dr.sens.dental.clinic.documents.PatientInfo;
 import dr.sens.dental.clinic.exceptions.DentalClinicOperationException;
 import dr.sens.dental.clinic.services.InvoiceAndPrescriptionService;
@@ -39,14 +41,19 @@ public class InvoiceAndPrescriptionController {
 		PatientInfo patientInfo = patientInfoService.getPatientInfoByPatientId(patientId);
 
 		if (Objects.isNull(patientInfo)) {
-			throw new DentalClinicOperationException("Patient information not found with id: " + patientId);
+			throw new DentalClinicOperationException("Patient information not found with patient id: " + patientId);
 		}
 
-		patientInfo.getConsultations()
-				.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);
+		List<Consultation> consultations = patientInfo.getConsultations();
 
-		if (patientInfo.getConsultations().isEmpty()) {
-			throw new DentalClinicOperationException("Patient information not found with id: " + patientId);
+		consultations.removeIf(consultation -> consultation.getDateOfVisit().compareTo(LocalDate.parse(dateOfVisit)) != 0);
+
+		consultations.removeIf(consultation -> !consultation.getInvoice().getInvoiceId().equals(invoiceId));
+
+		if (consultations.isEmpty()) {
+			throw new DentalClinicOperationException(
+					String.format("Patient information not found with date of visit [%s] and/or invoice id [%s]",
+							dateOfVisit, invoiceId));
 		}
 
 		invoiceAndPrescriptionService.createAndWritePdfToResponseStream(response, patientInfo);

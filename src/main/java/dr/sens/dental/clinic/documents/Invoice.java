@@ -5,15 +5,12 @@ import static dr.sens.dental.clinic.utils.DentalClinicUtils.getUniqueId;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-
 import com.mongodb.lang.NonNull;
 
 import dr.sens.dental.clinic.models.WorkDoneAmount;
 
 public class Invoice {
 
-	@Indexed(unique = true)
 	private String invoiceId;
 
 	@NonNull

@@ -5,6 +5,7 @@ import static dr.sens.dental.clinic.constants.ClinicManagementConstants.PATIENT_
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToConsultation;
 import static dr.sens.dental.clinic.utils.DentalClinicTransformerUtils.transformToPersonalInfo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,13 +65,37 @@ public class PatientInfoServiceImpl implements PatientInfoService {
 
 	@Override
 	public List<PatientSearchResult> searchRecords(QueryContent queryContent) {
-		return transformToSearchResults(patientInfoRepository.findByQueryContent(queryContent));
+		List<PatientInfo> patientInfos = patientInfoRepository.findByQueryContent(queryContent);
+		removeIfNotMatchWithQueryContent(patientInfos, queryContent);
+		return transformToSearchResults(patientInfos);
 	}
 
 	private PatientInfo buildNewPatientInfo(PersonalInfo personalInfo, Consultation consultation) {
 		List<Consultation> consultations = new ArrayList<>();
 		consultations.add(consultation);
 		return new PatientInfo(personalInfo, consultations);
+	}
+
+	private void removeIfNotMatchWithQueryContent(List<PatientInfo> patientInfos, QueryContent queryContent) {
+		patientInfos.stream().forEach(patientInfo -> {
+			List<Consultation> consultations = patientInfo.getConsultations();
+
+			if (StringUtils.isNotBlank(queryContent.getDateOfVisit())) {
+				consultations.removeIf(consultation -> consultation.getDateOfVisit()
+						.compareTo(LocalDate.parse(queryContent.getDateOfVisit())) != 0);
+			}
+
+			if (StringUtils.isNotBlank(queryContent.getInvoiceId())) {
+				consultations.removeIf(
+						consultation -> !consultation.getInvoice().getInvoiceId().equals(queryContent.getInvoiceId()));
+			}
+
+			if (StringUtils.isNotBlank(queryContent.getNextAppointmentDate())) {
+				consultations.removeIf(consultation -> Objects.isNull(consultation.getNextAppointmentDate())
+						|| consultation.getNextAppointmentDate()
+								.compareTo(LocalDate.parse(queryContent.getNextAppointmentDate())) != 0);
+			}
+		});
 	}
 
 	private List<PatientSearchResult> transformToSearchResults(List<PatientInfo> patientInfos) {
