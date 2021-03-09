@@ -98,7 +98,48 @@
 ---
 
 ## UI Layouts
-INP
+
+- __Login Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/login-page.jpg"/></div>
+
+- __Login Page with empty fields__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/login-page-empty-fields.jpg"/></div>
+
+- __Login Page with invalid credential__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/login-page-invalid-cred.jpg"/></div>
+
+- __Home Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/home-page.jpg"/></div>
+
+- __New Patient Form Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/new-patient-form-page.jpg"/></div>
+
+- __New Patient Form Page with error__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/new-patient-form-page-error.jpg"/></div>
+
+- __New Patient Review Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/new-patient-review-page.jpg"/></div>
+
+- __Invoice Form Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/invoice-form-page.jpg"/></div>
+
+- __Invoice Form Page with error__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/invoice-form-page-error.jpg"/></div>
+
+- __Invoice Form Review Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/invoice-form-review-page.jpg"/></div>
+
+- __Confirmation Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/confirmation-page.jpg"/></div>
+
+- __Search Patient Records Page__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/search-records-page.jpg"/></div>
+
+- __Search Patient Records with More Details__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/search-records-more-details-page.jpg"/></div>
+
+- __Search Patient Records with More Details and Expand__
+<div style="text-align:center"><img src="https://github.com/SubhadeepSen/clinic-management/blob/main/documents/UI-layouts/search-records-more-details-expand-page.jpg"/></div>
 
 ---
 
